@@ -51,11 +51,13 @@ This project uses **OOP (Object-Oriented Programming)** with ES6 classes:
 
 See [AI_DIARY.md](./AI_DIARY.md)
 
+## 📋 Project Board
+
+[View Trello Board](https://trello.com/b/TZF2Qkwv/ice-escape)
+
 ## 🌐 Live Demo
 
-[▶ Play on GitHub Pages](https://YOUR-USERNAME.github.io/ice-escape)
-
-> Replace `YOUR-USERNAME` with your GitHub username after deploying.
+[▶ Play on GitHub Pages](https://alisafarli06.github.io/ice-escape/)
 
 ## 🐛 Known Bugs / What I'd Fix Next
 
@@ -65,6 +67,6 @@ See [AI_DIARY.md](./AI_DIARY.md)
 
 **What I'd fix / add next:**
 - Add sound effects (collect snowflake, getting hit, game over)
-- Add a difficulty label in the HUD ("Level 2", "Level 3"...) so the player knows when it escalated
+- Add a difficulty level label in the HUD ("Level 2", "Level 3"...) so the player knows when it escalated
 - Add mobile touch controls (swipe or on-screen buttons)
 - Persist the high score with a name/initials leaderboard
