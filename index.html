@@ -9,10 +9,30 @@
   <body>
     <div id="game-container">
 
+      <canvas id="snow-canvas" width="400" height="600"></canvas>
+
+      <!-- Realistic CSS sun -->
+      <div id="sun">
+        <svg class="sun-rays-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+          <!-- 8 rays -->
+          <g stroke="#ffe033" stroke-linecap="round" opacity="0.85">
+            <line x1="30" y1="2"  x2="30" y2="10" stroke-width="2.5"/>
+            <line x1="30" y1="50" x2="30" y2="58" stroke-width="2.5"/>
+            <line x1="2"  y1="30" x2="10" y2="30" stroke-width="2.5"/>
+            <line x1="50" y1="30" x2="58" y2="30" stroke-width="2.5"/>
+            <line x1="8"  y1="8"  x2="14" y2="14" stroke-width="2"/>
+            <line x1="46" y1="46" x2="52" y2="52" stroke-width="2"/>
+            <line x1="52" y1="8"  x2="46" y2="14" stroke-width="2"/>
+            <line x1="14" y1="46" x2="8"  y2="52" stroke-width="2"/>
+          </g>
+        </svg>
+        <div class="sun-core"></div>
+      </div>
+
       <!-- Start Screen -->
       <div id="start-screen" class="overlay">
         <h1>🧊 Ice Escape</h1>
-        <p>Avoid the sun rays ☀️<br/>Collect the snowflakes ❄️</p>
+        <p>Avoid the sun rays &nbsp;💛<br/>Collect the snowflakes ❄️</p>
         <p class="highscore-label">🏆 Best: <span id="start-highscore">0</span></p>
         <button id="start-btn">Start Game</button>
       </div>
@@ -21,14 +41,14 @@
       <div id="game-screen" class="hidden">
         <div id="hud">
           <span id="score-display">Score: 0</span>
-          <span id="hp-display">❤️❤️❤️</span>
+          <span id="hp-display"></span>
         </div>
         <div id="player"></div>
       </div>
 
       <!-- Game Over Screen -->
       <div id="gameover-screen" class="overlay hidden">
-        <h1>💀 Game Over</h1>
+        <h1>💧 Melted!</h1>
         <p>Your score: <span id="final-score">0</span></p>
         <p class="highscore-label">🏆 Best: <span id="gameover-highscore">0</span></p>
         <button id="restart-btn">Play Again</button>
