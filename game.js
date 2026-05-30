@@ -11,7 +11,6 @@ class Player {
     this.movingRight = false;
     this.y = 600 - this.height - 20;
 
-    // Keys bound once — never duplicated on restart
     this._bindKeys();
   }
 
@@ -133,11 +132,12 @@ class Game {
     this.finalScoreEl = document.getElementById('final-score');
     this.scoreEl = document.getElementById('score-display');
     this.hpEl = document.getElementById('hp-display');
+    this.startHighscoreEl = document.getElementById('start-highscore');
+    this.gameoverHighscoreEl = document.getElementById('gameover-highscore');
 
     this.containerWidth = this.container.offsetWidth;
     this.containerHeight = this.container.offsetHeight;
 
-    // Player created once — keys bound once
     this.player = new Player(this.containerWidth);
 
     this.sunRays = [];
@@ -147,35 +147,42 @@ class Game {
     this.spawnTimer = 0;
     this.running = false;
 
-    // Buttons bound once
+    // Load high score from localStorage
+    this.highScore = parseInt(localStorage.getItem('iceEscapeHighScore')) || 0;
+    this.startHighscoreEl.textContent = this.highScore;
+
     document.getElementById('start-btn').addEventListener('click', () => this.start());
     document.getElementById('restart-btn').addEventListener('click', () => this.start());
   }
 
+  _saveHighScore() {
+    if (this.score > this.highScore) {
+      this.highScore = this.score;
+      localStorage.setItem('iceEscapeHighScore', this.highScore);
+    }
+  }
+
   start() {
-    // Full state reset
     this.score = 0;
     this.hp = 3;
     this.spawnTimer = 0;
     this.running = true;
 
-    // Remove all active objects from DOM and clear arrays
     this.sunRays.forEach((r) => r.remove());
     this.snowflakes.forEach((f) => f.remove());
     this.sunRays = [];
     this.snowflakes = [];
 
-    // Reset player to center
     this.player.reset();
 
-    // Switch screens
+    // Show fresh high score on start screen for next time
+    this.startHighscoreEl.textContent = this.highScore;
+
     this.startScreen.classList.add('hidden');
     this.gameoverScreen.classList.add('hidden');
     this.gameScreen.classList.remove('hidden');
 
-    // Update HUD immediately so it shows fresh values
     this._updateHUD();
-
     this._loop();
   }
 
@@ -234,7 +241,10 @@ class Game {
 
   _gameOver() {
     this.running = false;
+    this._saveHighScore();
     this.finalScoreEl.textContent = this.score;
+    this.gameoverHighscoreEl.textContent = this.highScore;
+    this.startHighscoreEl.textContent = this.highScore;
     this.gameScreen.classList.add('hidden');
     this.gameoverScreen.classList.remove('hidden');
   }
