@@ -8,13 +8,30 @@
   </head>
   <body>
     <div id="game-container">
-      <div id="game-screen">
+
+      <!-- Start Screen -->
+      <div id="start-screen" class="overlay">
+        <h1>🧊 Ice Escape</h1>
+        <p>Avoid the sun rays ☀️<br/>Collect the snowflakes ❄️</p>
+        <button id="start-btn">Start Game</button>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="game-screen" class="hidden">
         <div id="hud">
           <span id="score-display">Score: 0</span>
           <span id="hp-display">❤️❤️❤️</span>
         </div>
         <div id="player"></div>
       </div>
+
+      <!-- Game Over Screen -->
+      <div id="gameover-screen" class="overlay hidden">
+        <h1>💀 Game Over</h1>
+        <p>Your score: <span id="final-score">0</span></p>
+        <button id="restart-btn">Play Again</button>
+      </div>
+
     </div>
     <script src="game.js"></script>
   </body>

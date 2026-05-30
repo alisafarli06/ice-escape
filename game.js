@@ -26,6 +26,11 @@ class Player {
     });
   }
 
+  reset() {
+    this.x = (this.containerWidth - this.width) / 2;
+    this.el.style.left = this.x + 'px';
+  }
+
   update() {
     if (this.movingLeft) this.x -= this.speed;
     if (this.movingRight) this.x += this.speed;
@@ -120,6 +125,12 @@ class Game {
   constructor() {
     this.container = document.getElementById('game-container');
     this.gameScreen = document.getElementById('game-screen');
+    this.startScreen = document.getElementById('start-screen');
+    this.gameoverScreen = document.getElementById('gameover-screen');
+    this.finalScoreEl = document.getElementById('final-score');
+    this.scoreEl = document.getElementById('score-display');
+    this.hpEl = document.getElementById('hp-display');
+
     this.containerWidth = this.container.offsetWidth;
     this.containerHeight = this.container.offsetHeight;
 
@@ -127,15 +138,35 @@ class Game {
 
     this.sunRays = [];
     this.snowflakes = [];
-
     this.score = 0;
     this.hp = 3;
+    this.spawnTimer = 0;
+    this.running = false;
 
+    document.getElementById('start-btn').addEventListener('click', () => this.start());
+    document.getElementById('restart-btn').addEventListener('click', () => this.start());
+  }
+
+  start() {
+    // Reset state
+    this.score = 0;
+    this.hp = 3;
     this.spawnTimer = 0;
     this.running = true;
 
-    this.scoreEl = document.getElementById('score-display');
-    this.hpEl = document.getElementById('hp-display');
+    // Clear leftover objects
+    this.sunRays.forEach((r) => r.remove());
+    this.snowflakes.forEach((f) => f.remove());
+    this.sunRays = [];
+    this.snowflakes = [];
+
+    // Reset player position
+    this.player.reset();
+
+    // Switch screens
+    this.startScreen.classList.add('hidden');
+    this.gameoverScreen.classList.add('hidden');
+    this.gameScreen.classList.remove('hidden');
 
     this._loop();
   }
@@ -195,7 +226,9 @@ class Game {
 
   _gameOver() {
     this.running = false;
-    console.log(`Game Over! Final score: ${this.score}`);
+    this.finalScoreEl.textContent = this.score;
+    this.gameScreen.classList.add('hidden');
+    this.gameoverScreen.classList.remove('hidden');
   }
 
   _loop() {
