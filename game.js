@@ -6,10 +6,9 @@ class Player {
     this.containerWidth = containerWidth;
     this.x = (containerWidth - this.width) / 2;
     this.el = document.getElementById('player');
+    this.el.textContent = '🧊';
     this.movingLeft = false;
     this.movingRight = false;
-
-    // bottom: 20px — same as CSS
     this.y = 600 - this.height - 20;
 
     this._bindKeys();
@@ -125,13 +124,25 @@ class Game {
     this.containerHeight = this.container.offsetHeight;
 
     this.player = new Player(this.containerWidth);
+
     this.sunRays = [];
     this.snowflakes = [];
+
+    this.score = 0;
+    this.hp = 3;
 
     this.spawnTimer = 0;
     this.running = true;
 
+    this.scoreEl = document.getElementById('score-display');
+    this.hpEl = document.getElementById('hp-display');
+
     this._loop();
+  }
+
+  _updateHUD() {
+    this.scoreEl.textContent = `Score: ${this.score}`;
+    this.hpEl.textContent = '❤️'.repeat(this.hp);
   }
 
   _spawnObjects() {
@@ -157,7 +168,11 @@ class Game {
       }
       if (isColliding(playerRect, ray.getRect())) {
         ray.remove();
-        console.log('Hit by sun ray!');
+        this.hp--;
+        if (this.hp <= 0) {
+          this.hp = 0;
+          this._gameOver();
+        }
         return false;
       }
       return true;
@@ -171,11 +186,16 @@ class Game {
       }
       if (isColliding(playerRect, flake.getRect())) {
         flake.remove();
-        console.log('Snowflake collected!');
+        this.score += 10;
         return false;
       }
       return true;
     });
+  }
+
+  _gameOver() {
+    this.running = false;
+    console.log(`Game Over! Final score: ${this.score}`);
   }
 
   _loop() {
@@ -188,6 +208,7 @@ class Game {
     this.snowflakes.forEach((f) => f.update());
 
     this._checkCollisions();
+    this._updateHUD();
 
     requestAnimationFrame(() => this._loop());
   }
