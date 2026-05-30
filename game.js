@@ -11,6 +11,7 @@ class Player {
     this.movingRight = false;
     this.y = 600 - this.height - 20;
 
+    // Keys bound once — never duplicated on restart
     this._bindKeys();
   }
 
@@ -28,6 +29,8 @@ class Player {
 
   reset() {
     this.x = (this.containerWidth - this.width) / 2;
+    this.movingLeft = false;
+    this.movingRight = false;
     this.el.style.left = this.x + 'px';
   }
 
@@ -134,6 +137,7 @@ class Game {
     this.containerWidth = this.container.offsetWidth;
     this.containerHeight = this.container.offsetHeight;
 
+    // Player created once — keys bound once
     this.player = new Player(this.containerWidth);
 
     this.sunRays = [];
@@ -143,30 +147,34 @@ class Game {
     this.spawnTimer = 0;
     this.running = false;
 
+    // Buttons bound once
     document.getElementById('start-btn').addEventListener('click', () => this.start());
     document.getElementById('restart-btn').addEventListener('click', () => this.start());
   }
 
   start() {
-    // Reset state
+    // Full state reset
     this.score = 0;
     this.hp = 3;
     this.spawnTimer = 0;
     this.running = true;
 
-    // Clear leftover objects
+    // Remove all active objects from DOM and clear arrays
     this.sunRays.forEach((r) => r.remove());
     this.snowflakes.forEach((f) => f.remove());
     this.sunRays = [];
     this.snowflakes = [];
 
-    // Reset player position
+    // Reset player to center
     this.player.reset();
 
     // Switch screens
     this.startScreen.classList.add('hidden');
     this.gameoverScreen.classList.add('hidden');
     this.gameScreen.classList.remove('hidden');
+
+    // Update HUD immediately so it shows fresh values
+    this._updateHUD();
 
     this._loop();
   }
