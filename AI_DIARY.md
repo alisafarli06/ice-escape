@@ -108,4 +108,25 @@ I asked AI to improve the visuals significantly: make the sun realistic with CSS
 SVG generated in JavaScript (innerHTML) is surprisingly powerful — the ice block looks much more realistic than an emoji and required no external assets. Score-based difficulty feels fairer than time-based because it scales with how well the player is doing.
 
 **My own contribution:**
-I gave specific visual feedback on what I liked and what to change — I asked to remove flame emoji from sun rays, keep the ice emoji style for the last HP stage, and remove an experimental "Snowing" power-up feature that didn't fit the game feel.
+I gave specific visual feedback throughout — I asked to remove flame emoji from sun rays, keep the ice style for the last HP stage, and remove an experimental "Snowing" power-up feature that didn't fit the game feel. I also asked for the sun rays projectiles to be CSS glow balls instead of emoji, and requested the scroll lock fix when using arrow keys.
+
+---
+
+## Entry 6 – Game Sketch & Documentation
+
+**Date:** 2026-05-31
+
+**What I asked AI:**
+I asked AI to generate a game design sketch in the style of a hand-drawn Excalidraw diagram, showing all game zones, entities, annotations, and a legend — similar to a reference sketch I shared.
+
+**What AI helped with:**
+- Generated an SVG sketch with the game container, HUD bar, sun, falling sun rays, snowflakes, ice block player, and movement arrows
+- Added zone labels, annotation leader lines, an entities description box, and a legend box — all in a hand-drawn style
+- Wrote the final `README.md` with all required sections filled in: description, sketch, entities, how to play, tech decisions, AI diary link, GitHub Pages link, and known bugs
+- Wrote all 6 entries of `AI_DIARY.md`
+
+**What I learned / decided:**
+SVG can be used not just for game assets but also for design documentation. Keeping the sketch as an `.svg` file means it stays crisp at any screen size and doesn't need a separate image editor.
+
+**My own contribution:**
+I reviewed the sketch output, asked for the title to show the game name instead of "GAME CANVAS / VIEWPORT", and saved the final result as `assets/excalidraw-sketch.svg`.

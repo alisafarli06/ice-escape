@@ -6,17 +6,18 @@ A 2D browser-based survival game built with vanilla JavaScript, HTML, and CSS.
 
 The player controls an ice block that must survive falling sun rays while collecting snowflakes to increase their score. As the score grows, the game becomes progressively harder — sun rays fall faster and more frequently. Survive as long as possible without melting!
 
-## 🎨 Game Sketch (Excalidraw)
+## 🎨 Game Sketch
 
-![Game Sketch](./assets/excalidraw-sketch.png)
+![Game Sketch](./assets/excalidraw-sketch.svg)
 
 > Sketch shows the game layout: sun at the top center, falling sun rays and snowflakes, the ice block player at the bottom, and the HUD (score + HP).
 
 ## 🧩 Entities
 
-- **Player (Ice Block) 🧊** – Controlled with arrow keys. Moves horizontally only. Has 3 HP. Shrinks and cracks visually as HP decreases. Melts into nothing on game over.
+- **Player (Ice Block) 🧊** – Controlled with arrow keys. Moves horizontally only. Has 3 HP. Shrinks and cracks visually as HP decreases. Melts on game over.
 - **Sun Rays ☀️** – Fall from the sun at the top of the screen. Contact with the player reduces HP by 1.
 - **Snowflakes ❄️** – Fall from the top randomly. Collecting one gives +10 score.
+- **Snow Background** – Ambient canvas-based snow particle system. Purely visual.
 
 ## 🎮 How to Play
 
@@ -65,6 +66,5 @@ See [AI_DIARY.md](./AI_DIARY.md)
 **What I'd fix / add next:**
 - Add sound effects (collect snowflake, getting hit, game over)
 - Add a difficulty label in the HUD ("Level 2", "Level 3"...) so the player knows when it escalated
-- Improve melt animation with a CSS water puddle spreading at the bottom
 - Add mobile touch controls (swipe or on-screen buttons)
 - Persist the high score with a name/initials leaderboard
