@@ -2,7 +2,6 @@
 
 A 2D browser-based survival game built with vanilla JavaScript, HTML, and CSS — no frameworks, no libraries, no canvas for gameplay.
 
-🌐 **[▶ Play on GitHub Pages](https://alisafarli06.github.io/ice-escape/)**
 
 ---
 
