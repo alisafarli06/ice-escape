@@ -94,7 +94,7 @@ class Player {
     this.el.style.filter = '';
   }
 
-  hit() {
+  hit(onShake) {
     this.hp--;
     if (this.hp > 0) {
       this._applyStage();
@@ -103,6 +103,7 @@ class Player {
         this.el.style.filter = 'drop-shadow(0 4px 10px rgba(100,200,255,0.6))';
       }, 300);
     }
+    if (onShake) onShake();
   }
 
   melt(onDone) {
@@ -211,11 +212,14 @@ class Game {
     this.gameScreen     = document.getElementById('game-screen');
     this.startScreen    = document.getElementById('start-screen');
     this.gameoverScreen = document.getElementById('gameover-screen');
+    this.pauseScreen    = document.getElementById('pause-screen');
     this.finalScoreEl   = document.getElementById('final-score');
     this.scoreEl        = document.getElementById('score-display');
+    this.levelEl        = document.getElementById('level-display');
     this.hpEl           = document.getElementById('hp-display');
     this.startHsEl      = document.getElementById('start-highscore');
     this.gameoverHsEl   = document.getElementById('gameover-highscore');
+    this.pauseBtn       = document.getElementById('pause-btn');
 
     this.containerWidth  = this.container.offsetWidth;
     this.containerHeight = this.container.offsetHeight;
@@ -230,6 +234,7 @@ class Game {
     this.spawnTimer = 0;
     this.elapsed    = 0;
     this.running    = false;
+    this.paused     = false;
     this.gameOverPending = false;
 
     this.highScore = parseInt(localStorage.getItem('iceEscapeHighScore')) || 0;
@@ -237,6 +242,15 @@ class Game {
 
     document.getElementById('start-btn').addEventListener('click',   () => this.start());
     document.getElementById('restart-btn').addEventListener('click', () => this.start());
+    document.getElementById('resume-btn').addEventListener('click',  () => this.resume());
+    this.pauseBtn.addEventListener('click', () => this.pause());
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (this.running && !this.paused) this.pause();
+        else if (this.paused) this.resume();
+      }
+    });
 
     this._snowLoop();
   }
@@ -269,6 +283,7 @@ class Game {
     this.spawnTimer = 0;
     this.elapsed    = 0;
     this.running    = true;
+    this.paused     = false;
     this.gameOverPending = false;
 
     this.sunRays.forEach((r) => r.remove());
@@ -281,15 +296,44 @@ class Game {
 
     this.startScreen.classList.add('hidden');
     this.gameoverScreen.classList.add('hidden');
+    this.pauseScreen.classList.add('hidden');
     this.gameScreen.classList.remove('hidden');
+    this.pauseBtn.classList.add('visible');
 
     this._updateHUD();
     this._lastTime = performance.now();
     this._loop();
   }
 
+  _shakeContainer() {
+    this.container.classList.remove('shake');
+    void this.container.offsetWidth; // reflow to restart animation
+    this.container.classList.add('shake');
+    setTimeout(() => this.container.classList.remove('shake'), 350);
+  }
+
+  pause() {
+    if (!this.running || this.paused || this.gameOverPending) return;
+    this.paused = true;
+    this.running = false;
+    this.pauseScreen.classList.remove('hidden');
+    this.pauseBtn.textContent = '▶';
+  }
+
+  resume() {
+    if (!this.paused) return;
+    this.paused = false;
+    this.running = true;
+    this.pauseScreen.classList.add('hidden');
+    this.pauseBtn.textContent = '⏸';
+    this._lastTime = performance.now();
+    this._loop();
+  }
+
   _updateHUD() {
+    const level = Math.floor(this.elapsed / 10) + 1;
     this.scoreEl.textContent = `Score: ${this.score}`;
+    this.levelEl.textContent = `Level ${level}`;
     this.hpEl.textContent    = '🧊'.repeat(this.hp) + '🫙'.repeat(3 - this.hp);
   }
 
@@ -313,7 +357,7 @@ class Game {
       if (ray.y > this.containerHeight) { ray.remove(); return false; }
       if (isColliding(pr, ray.getRect())) {
         ray.remove();
-        this.player.hit();
+        this.player.hit(() => this._shakeContainer());
         this.hp--;
         if (this.hp <= 0) { this.hp = 0; this._triggerGameOver(); }
         return false;
@@ -336,6 +380,7 @@ class Game {
   _triggerGameOver() {
     this.running = false;
     this.gameOverPending = true;
+    this.pauseBtn.classList.remove('visible');
     this._saveHighScore();
 
     this.player.melt(() => {
